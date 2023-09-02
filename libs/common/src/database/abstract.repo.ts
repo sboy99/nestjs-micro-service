@@ -21,7 +21,7 @@ export class AbstractRepo<TDocument extends AbstractDocument> {
   /**
    * List all documents
    */
-  async list(filterQuery: FilterQuery<TDocument>): Promise<TDocument[]> {
+  async list(filterQuery?: FilterQuery<TDocument>): Promise<TDocument[]> {
     const documents = await this.model.find(filterQuery, {}, { lean: true });
     return documents as TDocument[];
   }
