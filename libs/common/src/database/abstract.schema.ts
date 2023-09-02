@@ -4,6 +4,7 @@ import { SchemaTypes, Types } from 'mongoose';
 @Schema({
   timestamps: true,
   validateBeforeSave: true,
+  versionKey: false,
 })
 export class AbstractDocument {
   @Prop({
