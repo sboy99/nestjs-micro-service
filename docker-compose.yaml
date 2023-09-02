@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # Api service
+  reservation:
+    build:
+      context: .
+      dockerfile: ./apps/reservation/Dockerfile
+      target: development
+    command: pnpm run start:dev reservation
+    container_name: reservation
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
+    networks:
+      - nestjs_network
+    volumes:
+      - .:/usr/src/app
+  # Database service
+  db:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - nestjs_vol:/data/db
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - nestjs_network
+  # Chache service
+  # cache:
+  #   image: redis
+  #   container_name: redis
+  #   restart: always
+  #   ports:
+  #     - '6379:6379'
+  #   volumes:
+  #     - buidl_cache:/data
+# Network
+networks:
+  nestjs_network:
+# Volume
+volumes:
+  nestjs_vol:
+  # buidl_cache:
