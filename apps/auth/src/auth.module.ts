@@ -1,9 +1,10 @@
 import { LoggerModule } from '@app/common';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { ConfigValidationSchema } from './config';
+import { ConfigValidationSchema, TConfig } from './config';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -12,6 +13,16 @@ import { UserModule } from './user/user.module';
       isGlobal: true,
       validationSchema: ConfigValidationSchema,
       validate: (config) => ConfigValidationSchema.parse(config),
+    }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService<TConfig>) => ({
+        secret: configService.get('JWT_SECRET'),
+        signOptions: {
+          expiresIn: configService.get('JWT_EXPIRATION'),
+        },
+      }),
     }),
     LoggerModule,
     UserModule,

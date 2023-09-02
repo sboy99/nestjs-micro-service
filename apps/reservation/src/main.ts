@@ -1,6 +1,8 @@
 import { AllExceptionsFilter } from '@app/common/filters';
+import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { Logger } from 'nestjs-pino';
+import { TConfig } from './config';
 import { ReservationModule } from './reservation.module';
 
 async function bootstrap() {
@@ -11,6 +13,8 @@ async function bootstrap() {
   // logger
   app.useLogger(app.get(Logger));
 
-  await app.listen(3000);
-}
+  // port
+  const configService = app.get(ConfigService<TConfig>);
+  const port= configService.get('PORT') ?? 3000
+  await app.listen(port);}
 bootstrap();

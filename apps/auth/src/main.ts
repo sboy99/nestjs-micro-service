@@ -1,7 +1,9 @@
 import { AllExceptionsFilter } from '@app/common/filters';
+import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { Logger } from 'nestjs-pino';
 import { AuthModule } from './auth.module';
+import { TConfig } from './config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AuthModule);
@@ -12,6 +14,9 @@ async function bootstrap() {
   // logger
   app.useLogger(app.get(Logger));
 
-  await app.listen(3001);
+  // port
+  const configService = app.get(ConfigService<TConfig>);
+  const port= configService.get('PORT') ?? 3001
+  await app.listen(port);
 }
 bootstrap();
