@@ -1,8 +1,8 @@
-import { Controller, Post, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators';
-import { LocalAuthGuard } from './guards';
+import { JwtAuthGuard, LocalAuthGuard } from './guards';
 import { UserDocument } from './user/models/user.schema';
 
 @Controller('auth')
@@ -23,5 +23,11 @@ export class AuthController {
     return {
       accessToken: token,
     };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('user')
+  async getUser(@CurrentUser() user: UserDocument) {
+    return user;
   }
 }
