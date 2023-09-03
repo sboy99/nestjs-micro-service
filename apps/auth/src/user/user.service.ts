@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import * as bcryptjs from 'bcryptjs';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserRepo } from './user.repo';
@@ -7,8 +8,18 @@ import { UserRepo } from './user.repo';
 export class UserService {
   constructor(private readonly userRepo: UserRepo) {}
 
-  create(createUserDto: CreateUserDto) {
+  public async create(createUserDto: CreateUserDto) {
     return this.userRepo.create(createUserDto);
+  }
+
+  public async verify(email: string, password: string) {
+    const user = await this.userRepo.findOne({ email });
+
+    // compare password
+    const isMatch = await bcryptjs.compare(password, user.password);
+    if (!isMatch) throw new UnauthorizedException('Invalid credentials');
+
+    return user;
   }
 
   findAll() {

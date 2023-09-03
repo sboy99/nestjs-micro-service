@@ -20,7 +20,7 @@ import { UserModule } from './user/user.module';
       useFactory: (configService: ConfigService<TConfig>) => ({
         secret: configService.get('JWT_SECRET'),
         signOptions: {
-          expiresIn: configService.get('JWT_EXPIRATION'),
+          expiresIn: `${configService.get('JWT_EXPIRATION')}s`,
         },
       }),
     }),
