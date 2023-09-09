@@ -8,7 +8,7 @@ services:
       dockerfile: ./apps/auth/Dockerfile
       target: development
     command: pnpm run start:dev auth
-    container_name: auth
+    container_name: nest_auth
     depends_on:
       db:
         condition: service_healthy
@@ -27,7 +27,7 @@ services:
       dockerfile: ./apps/reservation/Dockerfile
       target: development
     command: pnpm run start:dev reservation
-    container_name: reservation
+    container_name: nest_reservation
     depends_on:
       db:
         condition: service_healthy
@@ -42,7 +42,7 @@ services:
   # Database service
   db:
     image: mongo
-    container_name: mongodb
+    container_name: nest_mongo
     restart: always
     ports:
       - 27017:27017

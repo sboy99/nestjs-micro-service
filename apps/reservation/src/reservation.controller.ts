@@ -1,4 +1,6 @@
+import { CurrentUser, UseAuth } from '@app/common/decorators';
 import { ZodValidationPipe } from '@app/common/pipe';
+import { TUser } from '@app/common/types';
 import {
   Body,
   Controller,
@@ -7,7 +9,6 @@ import {
   Param,
   Patch,
   Post,
-  UsePipes,
 } from '@nestjs/common';
 import {
   CreateReservationDto,
@@ -21,8 +22,12 @@ export class ReservationController {
   constructor(private readonly reservationService: ReservationService) {}
 
   @Post()
-  @UsePipes(new ZodValidationPipe(CreateReservationSchema))
-  create(@Body() createReservationDto: CreateReservationDto) {
+  @UseAuth()
+  create(
+    @CurrentUser() user: TUser,
+    @Body(new ZodValidationPipe(CreateReservationSchema))
+    createReservationDto: CreateReservationDto,
+  ) {
     return this.reservationService.create(createReservationDto);
   }
 

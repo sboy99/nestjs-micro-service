@@ -1,14 +1,14 @@
 import { ExecutionContext, createParamDecorator } from '@nestjs/common';
 import { Request } from 'express';
-import { UserDocument } from '../user/models/user.schema';
+import { TUser } from '../types';
 
 export const CurrentUser = createParamDecorator(
   (
-    data: keyof UserDocument | undefined,
+    data: keyof TUser | undefined,
     ctx: ExecutionContext,
-  ): UserDocument | UserDocument[keyof UserDocument] => {
+  ): TUser | TUser[keyof TUser] => {
     const request = ctx.switchToHttp().getRequest<Request>();
-    if (!data) return request.user as UserDocument;
+    if (!data) return request.user as TUser;
     return request.user[data];
   },
 );
