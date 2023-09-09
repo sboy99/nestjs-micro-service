@@ -1,4 +1,6 @@
+import { MessagePatterns } from '@app/common/enums';
 import { Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
+import { MessagePattern } from '@nestjs/microservices';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators';
@@ -28,6 +30,12 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get('user')
   async getUser(@CurrentUser() user: UserDocument) {
+    return user;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @MessagePattern(MessagePatterns.Authenticate)
+  async authenticateUser(@CurrentUser() user: UserDocument) {
     return user;
   }
 }
