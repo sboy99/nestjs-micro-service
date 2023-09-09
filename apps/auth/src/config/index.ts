@@ -1,14 +1,20 @@
 import { z } from 'zod';
 
 // .env variables
-const MONGO_URI = z.string();
-const PORT = z.coerce.number();
-const JWT_SECRET = z.string();
-const JWT_EXPIRATION = z.string();
-const COOKIE_SECRET = z.string();
+import {
+  COOKIE_SECRET,
+  HTTP_PORT,
+  JWT_EXPIRATION,
+  JWT_SECRET,
+  MONGO_URI,
+  TCP_HOST,
+  TCP_PORT,
+} from '@app/common/config';
 
 export const ConfigValidationSchema = z.object({
-  PORT,
+  HTTP_PORT,
+  TCP_HOST,
+  TCP_PORT,
   MONGO_URI,
   JWT_SECRET,
   JWT_EXPIRATION,

@@ -1,6 +1,7 @@
 import { AllExceptionsFilter } from '@app/common/filters';
 import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { Transport } from '@nestjs/microservices';
 import * as cookieParser from 'cookie-parser';
 import { Logger } from 'nestjs-pino';
 import { AuthModule } from './auth.module';
@@ -20,8 +21,17 @@ async function bootstrap() {
   const cookieSecret = configService.get('COOKIE_SECRET');
   app.use(cookieParser(cookieSecret));
 
+  // connect to microservices
+  app.connectMicroservice({
+    transport: Transport.TCP,
+    options: {
+      host: configService.get('TCP_HOST'),
+      port: configService.get('TCP_PORT'),
+    },
+  });
+  await app.startAllMicroservices();
+
   // port
-  const port = configService.get('PORT') ?? 3001;
-  await app.listen(port);
+  await app.listen(configService.get('HTTP_PORT'));
 }
 bootstrap();
