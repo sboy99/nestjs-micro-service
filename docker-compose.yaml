@@ -39,6 +39,25 @@ services:
       - nestjs_network
     volumes:
       - .:/usr/src/app
+
+  payment:
+    build:
+      context: .
+      dockerfile: ./apps/payment/Dockerfile
+      target: development
+    command: pnpm run start:dev payment
+    container_name: nest_payment
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - 3003:3003
+    env_file:
+      - ./apps/payment/.env
+    networks:
+      - nestjs_network
+    volumes:
+      - .:/usr/src/app
   # Database service
   db:
     image: mongo

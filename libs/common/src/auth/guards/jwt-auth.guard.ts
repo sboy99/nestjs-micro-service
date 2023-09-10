@@ -19,7 +19,7 @@ export class JwtAuthGuard implements CanActivate {
 
     // send auth microservice authenticate request
     return this.authClient
-      .send(MessagePatterns.Authenticate, { accessToken })
+      .send(MessagePatterns.AUTHENTICATE, { accessToken })
       .pipe(
         tap((res) => (req.user = res)),
         map(() => true),

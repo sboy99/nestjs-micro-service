@@ -15,3 +15,6 @@ export const TCP_PORT = z.coerce.number();
 // services addr
 export const AUTH_HOST = TCP_HOST;
 export const AUTH_PORT = TCP_PORT;
+
+// stripe service
+export const STRIPE_SECRET = z.string();

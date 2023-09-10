@@ -35,7 +35,7 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @MessagePattern(MessagePatterns.Authenticate)
+  @MessagePattern(MessagePatterns.AUTHENTICATE)
   async authenticateUser(@CurrentUser() user: UserDocument) {
     return user;
   }

@@ -1,3 +1,4 @@
 export enum MessagePatterns {
-  Authenticate = 'Authenticate',
+  AUTHENTICATE = 'Authenticate',
+  CREATE_CHARGE = 'Create_Charge',
 }
