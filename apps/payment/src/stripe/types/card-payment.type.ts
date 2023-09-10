@@ -1,7 +1,7 @@
 export type TCurrency = 'usd' | 'inr';
 
-export type TCardPaymentMethod = {
-  id: string;
+export type TCardPayment = {
+  paymentMethod: 'pm_card_visa';
   amount: number;
   currency: TCurrency;
 };

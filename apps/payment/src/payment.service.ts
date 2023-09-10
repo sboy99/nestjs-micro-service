@@ -7,14 +7,10 @@ export class PaymentService {
   constructor(private readonly stripeService: StripeService) {}
 
   async createCharge(createChargeDto: CreateChargeDto) {
-    const paymentMethod = await this.stripeService.createCard(
-      createChargeDto.card,
-    );
-
     const paymentIntend = await this.stripeService.createCardPaymentIntent({
-      id: paymentMethod.id,
       currency: 'inr',
       amount: createChargeDto.amount,
+      paymentMethod: 'pm_card_visa',
     });
 
     return paymentIntend;

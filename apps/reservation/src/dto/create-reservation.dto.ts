@@ -2,17 +2,15 @@ import { mongoObjectId } from '@app/utils/zod-utilts';
 import { z } from 'zod';
 
 const userId = mongoObjectId;
-const placeId = mongoObjectId;
-const invoiceId = mongoObjectId;
+const amount = z.coerce.number();
 const startDate = z.string().transform((arg) => new Date(arg));
 const endDate = z.string().transform((arg) => new Date(arg));
 
 export const CreateReservationSchema = z.object({
   userId,
-  placeId,
-  invoiceId,
   startDate,
   endDate,
+  amount,
 });
 
 export type CreateReservationDto = Required<

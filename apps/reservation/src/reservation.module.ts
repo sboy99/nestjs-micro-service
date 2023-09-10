@@ -1,5 +1,5 @@
 import { DatabaseModule, LoggerModule } from '@app/common';
-import { AUTH_SERVICE } from '@app/common/constants';
+import { AUTH_SERVICE, PAYMENT_SERVICE } from '@app/common/constants';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -22,6 +22,18 @@ import { ReservationService } from './reservation.service';
             options: {
               host: configService.get('AUTH_HOST'),
               port: configService.get('AUTH_PORT'),
+            },
+          }),
+        },
+        {
+          name: PAYMENT_SERVICE,
+          imports: [ConfigModule],
+          inject: [ConfigService<TConfig>],
+          useFactory: (configService: ConfigService<TConfig>) => ({
+            transport: Transport.TCP,
+            options: {
+              host: configService.get('PAYMENT_HOST'),
+              port: configService.get('PAYMENT_PORT'),
             },
           }),
         },

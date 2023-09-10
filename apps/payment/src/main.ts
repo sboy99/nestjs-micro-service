@@ -1,5 +1,6 @@
+import { AllExceptionsFilter } from '@app/common/filters';
 import { ConfigService } from '@nestjs/config';
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { Transport } from '@nestjs/microservices';
 import * as cookieParser from 'cookie-parser';
 import { Logger } from 'nestjs-pino';
@@ -11,6 +12,10 @@ async function bootstrap() {
 
   // config
   const configService = app.get<ConfigService<TConfig>>(ConfigService);
+
+  // exception handler
+  const httpAdapter = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
 
   // logger
   app.useLogger(app.get(Logger));

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 import { TConfig } from '../config';
-import { TCardPaymentMethod } from './types';
+import { TCardPayment } from './types';
 
 @Injectable()
 export class StripeService {
@@ -22,13 +22,13 @@ export class StripeService {
     });
   }
 
-  async createCardPaymentIntent(paymentMethod: TCardPaymentMethod) {
+  async createCardPaymentIntent(payment: TCardPayment) {
     return this.stripe.paymentIntents.create({
-      amount: paymentMethod.amount * 100,
-      currency: paymentMethod.currency,
-      payment_method: paymentMethod.id,
-      payment_method_types: ['card'],
+      amount: payment.amount * 100,
+      currency: payment.currency,
+      payment_method: payment.paymentMethod,
       confirm: true,
+      return_url: this.configService.get('STRIPE_RETURN_URL'),
     });
   }
 }

@@ -44,7 +44,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
       statusCode = HttpStatus.BAD_REQUEST;
       message = 'Data validation exception';
       error = exception.errors.reduce<Record<string, string>>((acc, curr) => {
-        acc[curr.path[0]] = curr.message;
+        acc[curr.path.join('.')] = curr.message;
         return acc;
       }, {});
     }

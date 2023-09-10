@@ -1,1 +1,1 @@
-export * from './card-payment-method.type';
+export * from './card-payment.type';

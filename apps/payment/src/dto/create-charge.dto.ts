@@ -1,6 +1,7 @@
-import Stripe from 'stripe';
+import { z } from 'zod';
 
-export class CreateChargeDto {
-  card: Stripe.PaymentMethodCreateParams.Card1;
-  amount: number;
-}
+export const CreateChargeSchema = z.object({
+  amount: z.coerce.number(),
+});
+
+export type CreateChargeDto = z.infer<typeof CreateChargeSchema>;
