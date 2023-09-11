@@ -19,6 +19,9 @@ export const AUTH_PORT = TCP_PORT;
 // > payment
 export const PAYMENT_HOST = TCP_HOST;
 export const PAYMENT_PORT = TCP_PORT;
+// > notification
+export const NOTIFICATION_HOST = TCP_HOST;
+export const NOTIFICATION_PORT = TCP_PORT;
 
 // stripe service
 export const STRIPE_SECRET = z.string();

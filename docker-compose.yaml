@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # Api service
+  # micro services
   auth:
     build:
       context: .
@@ -50,15 +50,31 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - 3003:3003
     env_file:
       - ./apps/payment/.env
     networks:
       - nestjs_network
     volumes:
       - .:/usr/src/app
-  # Database service
+
+  notification:
+    build:
+      context: .
+      dockerfile: ./apps/notification/Dockerfile
+      target: development
+    command: pnpm run start:dev notification
+    container_name: nest_notification
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./apps/notification/.env
+    networks:
+      - nestjs_network
+    volumes:
+      - .:/usr/src/app
+
+  # Infra
   db:
     image: mongo
     container_name: nest_mongo
