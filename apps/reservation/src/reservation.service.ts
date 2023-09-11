@@ -1,5 +1,7 @@
 import { PAYMENT_SERVICE } from '@app/common/constants';
+import { CreateChargeDto } from '@app/common/dto';
 import { MessagePatterns } from '@app/common/enums';
+import { TUser } from '@app/common/types';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { catchError, map } from 'rxjs';
@@ -15,20 +17,21 @@ export class ReservationService {
     private readonly reservationRepo: ReservationRepo,
   ) {}
 
-  create(createReservationDto: CreateReservationDto) {
+  create(user: TUser, createReservationDto: CreateReservationDto) {
     return this.paymentService
-      .send<Stripe.Response<Stripe.PaymentIntent>>(
+      .send<Stripe.Response<Stripe.PaymentIntent>, CreateChargeDto>(
         MessagePatterns.CREATE_CHARGE,
         {
           amount: createReservationDto.amount,
+          email: user.email,
         },
       )
       .pipe(
         map((res) => {
-          console.log(res);
           return this.reservationRepo.create({
-            ...createReservationDto,
+            userId: user._id,
             invoiceId: res.id,
+            ...createReservationDto,
           });
         }),
         catchError((err) => {

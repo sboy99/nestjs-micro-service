@@ -28,7 +28,7 @@ export class ReservationController {
     @Body(new ZodValidationPipe(CreateReservationSchema))
     createReservationDto: CreateReservationDto,
   ) {
-    return this.reservationService.create(createReservationDto);
+    return this.reservationService.create(user, createReservationDto);
   }
 
   @Get()

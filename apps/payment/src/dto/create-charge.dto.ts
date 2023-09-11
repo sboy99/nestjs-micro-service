@@ -5,4 +5,4 @@ export const CreateChargeSchema = z.object({
   amount: z.coerce.number(),
 });
 
-export type CreateChargeDto = z.infer<typeof CreateChargeSchema>;
+export type CreateChargeDto = Required<z.infer<typeof CreateChargeSchema>>;

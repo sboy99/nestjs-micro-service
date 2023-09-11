@@ -29,7 +29,6 @@ export class PaymentService {
         mailTemplate: MailTemplates.PAYMENT_SUCCESS,
       },
     );
-
     return paymentIntend;
   }
 }
