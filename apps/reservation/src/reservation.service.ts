@@ -22,8 +22,9 @@ export class ReservationService {
       .send<Stripe.Response<Stripe.PaymentIntent>, CreateChargeDto>(
         MessagePatterns.CREATE_CHARGE,
         {
-          amount: createReservationDto.amount,
+          userId: user._id,
           email: user.email,
+          amount: createReservationDto.amount,
         },
       )
       .pipe(

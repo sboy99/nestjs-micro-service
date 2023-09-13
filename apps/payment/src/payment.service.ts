@@ -1,5 +1,5 @@
 import { NOTIFICATION_SERVICE } from '@app/common/constants';
-import { NotifyEmailDto } from '@app/common/dto';
+import { EmailNotificationDto, PushNotificationDto } from '@app/common/dto';
 import { EventPatterns, MailTemplates } from '@app/common/enums';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
@@ -21,12 +21,21 @@ export class PaymentService {
       paymentMethod: 'pm_card_visa',
     });
 
-    // notify user
-    this.notificationService.emit<unknown, NotifyEmailDto>(
-      EventPatterns.NOTIFY_USING_MAIL,
+    // send email notification
+    this.notificationService.emit<unknown, EmailNotificationDto>(
+      EventPatterns.EMAIL_NOTIFICATION,
       {
         email: createChargeDto.email,
         mailTemplate: MailTemplates.PAYMENT_SUCCESS,
+      },
+    );
+
+    // send push notification
+    this.notificationService.emit<unknown, PushNotificationDto>(
+      EventPatterns.PUSH_NOTIFICATION,
+      {
+        userId: createChargeDto.userId,
+        message: `Payment Rs:${createChargeDto.amount} was successful`,
       },
     );
     return paymentIntend;

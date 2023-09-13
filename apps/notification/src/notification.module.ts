@@ -6,6 +6,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ConfigValidationSchema, TConfig } from './config';
 import { NotificationController } from './notification.controller';
 import { NotificationService } from './notification.service';
+import { PushModule } from './push/push.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { NotificationService } from './notification.service';
         },
       ],
     }),
+    PushModule,
   ],
   controllers: [NotificationController],
   providers: [NotificationService],

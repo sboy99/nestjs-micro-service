@@ -1,9 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { NotifyEmailDto } from './dto/notify-email.dto';
+import { EmailNotificationDto } from './dto/email-notification.dto';
+import { PushNotificationDto } from './dto/push-notification.dto';
+import { PushGateway } from './push/push.gateway';
 
 @Injectable()
 export class NotificationService {
-  notifyUsingMail(notifyEmailDto: NotifyEmailDto) {
-    console.log(notifyEmailDto);
+  constructor(private readonly pushGateway: PushGateway) {}
+
+  sendMailNotification(emailNotificationDto: EmailNotificationDto) {
+    console.log(emailNotificationDto);
+  }
+
+  sendPushNotification(pushNotificationDto: PushNotificationDto) {
+    this.pushGateway.sendNotification(pushNotificationDto);
   }
 }
