@@ -1,6 +1,5 @@
+import { EmailNotificationDto, PushNotificationDto } from '@app/common/dto';
 import { Injectable } from '@nestjs/common';
-import { EmailNotificationDto } from './dto/email-notification.dto';
-import { PushNotificationDto } from './dto/push-notification.dto';
 import { PushGateway } from './push/push.gateway';
 
 @Injectable()

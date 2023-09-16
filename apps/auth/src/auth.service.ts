@@ -1,9 +1,9 @@
+import { TUser } from '@app/common/types';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
 import { TConfig } from './config';
-import { UserDocument } from './user/models/user.schema';
 
 @Injectable()
 export class AuthService {
@@ -12,10 +12,10 @@ export class AuthService {
     private readonly configService: ConfigService<TConfig>,
   ) {}
 
-  public async getLoginToken(user: UserDocument): Promise<string> {
+  public async getLoginToken(user: TUser): Promise<string> {
     // prepare token payload
     const tokenPayload = {
-      userId: user._id.toHexString(),
+      userId: user._id,
     };
 
     // create jwt token

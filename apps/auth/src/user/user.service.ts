@@ -9,7 +9,10 @@ export class UserService {
   constructor(private readonly userRepo: UserRepo) {}
 
   public async create(createUserDto: CreateUserDto) {
-    return this.userRepo.create(createUserDto);
+    return this.userRepo.create({
+      email: createUserDto.email,
+      password: await this.hashPassword(createUserDto.password),
+    });
   }
 
   public async verify(email: string, password: string) {
@@ -36,5 +39,10 @@ export class UserService {
 
   remove(_id: string) {
     return this.userRepo.findOneAndDelete({ _id });
+  }
+
+  private async hashPassword(password: string) {
+    const salt = await bcryptjs.genSalt(10);
+    return bcryptjs.hash(password, salt);
   }
 }

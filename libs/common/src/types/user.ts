@@ -1,4 +1,4 @@
-import { UserDocument } from '@/auth/src/user/models/user.schema';
+import { UserDocument } from '../models/user.schema';
 
 type Transform<T extends object, K extends keyof T, U> = {
   [Key in keyof T]: Key extends K ? U : T[Key];

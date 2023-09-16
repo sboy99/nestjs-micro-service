@@ -1,7 +1,7 @@
 import { DatabaseModule } from '@app/common';
+import { UserModelDef } from '@app/common/models';
 import { Module } from '@nestjs/common';
 import { LocalStrategy } from '../strategies';
-import { UserModelDef } from './models/user.schema';
 import { UserController } from './user.controller';
 import { UserRepo } from './user.repo';
 import { UserService } from './user.service';

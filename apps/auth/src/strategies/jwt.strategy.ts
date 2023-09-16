@@ -1,3 +1,4 @@
+import { TUser } from '@app/common/types';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
@@ -25,7 +26,12 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
   async validate({ userId }: TokenPayload) {
     try {
-      const user = await this.userService.findOne(userId);
+      const userDoc = await this.userService.findOne(userId);
+      const user: TUser = {
+        _id: userDoc._id.toHexString(),
+        email: userDoc.email,
+        password: userDoc.password,
+      };
       return user;
     } catch (error) {
       throw new UnauthorizedException('You are unauthorized');

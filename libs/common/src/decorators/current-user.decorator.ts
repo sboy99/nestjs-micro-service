@@ -9,6 +9,6 @@ export const CurrentUser = createParamDecorator(
   ): TUser | TUser[keyof TUser] => {
     const request = ctx.switchToHttp().getRequest<Request>();
     if (!data) return request.user as TUser;
-    return request.user[data];
+    return request.user?.[data];
   },
 );

@@ -5,7 +5,6 @@ import { TUser } from '@app/common/types';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { catchError, map } from 'rxjs';
-import Stripe from 'stripe';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
 import { ReservationRepo } from './reservation.repo';
@@ -19,14 +18,11 @@ export class ReservationService {
 
   create(user: TUser, createReservationDto: CreateReservationDto) {
     return this.paymentService
-      .send<Stripe.Response<Stripe.PaymentIntent>, CreateChargeDto>(
-        MessagePatterns.CREATE_CHARGE,
-        {
-          userId: user._id,
-          email: user.email,
-          amount: createReservationDto.amount,
-        },
-      )
+      .send<any, CreateChargeDto>(MessagePatterns.CREATE_CHARGE, {
+        userId: user._id,
+        email: user.email,
+        amount: createReservationDto.amount,
+      })
       .pipe(
         map((res) => {
           return this.reservationRepo.create({

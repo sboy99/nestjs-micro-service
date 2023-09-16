@@ -1,3 +1,4 @@
+import { CreateChargeDto, CreateChargeSchema } from '@app/common/dto';
 import { MessagePatterns } from '@app/common/enums';
 import { ZodValidationPipe } from '@app/common/pipe';
 import { Controller } from '@nestjs/common';
@@ -7,7 +8,6 @@ import {
   Payload,
   RmqContext,
 } from '@nestjs/microservices';
-import { CreateChargeDto, CreateChargeSchema } from './dto/create-charge.dto';
 import { PaymentService } from './payment.service';
 
 @Controller()

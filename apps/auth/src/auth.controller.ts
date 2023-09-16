@@ -6,7 +6,6 @@ import { MessagePattern } from '@nestjs/microservices';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard, LocalAuthGuard } from './guards';
-import { UserDocument } from './user/models/user.schema';
 
 @Controller('auth')
 export class AuthController {
@@ -15,7 +14,7 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(
-    @CurrentUser() user: UserDocument,
+    @CurrentUser() user: TUser,
     @Res({ passthrough: true }) res: Response,
   ) {
     // get login token
@@ -36,7 +35,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @MessagePattern(MessagePatterns.AUTHENTICATE)
-  async authenticateUser(@CurrentUser() user: UserDocument) {
+  async authenticateUser(@CurrentUser() user: TUser) {
     return user;
   }
 }

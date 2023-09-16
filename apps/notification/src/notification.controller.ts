@@ -1,15 +1,13 @@
+import {
+  EmailNotificationDto,
+  EmailNotificationSchema,
+  PushNotificationDto,
+  PushNotificationSchema,
+} from '@app/common/dto';
 import { EventPatterns } from '@app/common/enums';
 import { ZodValidationPipe } from '@app/common/pipe';
 import { Controller } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
-import {
-  EmailNotificationDto,
-  EmailNotificationSchema,
-} from './dto/email-notification.dto';
-import {
-  PushNotificationDto,
-  PushNotificationSchema,
-} from './dto/push-notification.dto';
 import { NotificationService } from './notification.service';
 
 @Controller()

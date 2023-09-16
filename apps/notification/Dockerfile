@@ -6,12 +6,17 @@ WORKDIR /usr/src/app
 
 COPY package.json ./
 COPY pnpm-lock.yaml ./
+COPY tsconfig.json tsconfig.json
+COPY tsconfig.build.json tsconfig.build.json
 
 RUN npm install -g pnpm
 
 RUN pnpm install
 
-COPY . .
+COPY apps/notification apps/notification
+COPY libs libs
+
+RUN cd apps/notification && pnpm install
 
 RUN pnpm run build
 

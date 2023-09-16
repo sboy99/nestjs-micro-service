@@ -1,8 +1,8 @@
+import { PushNotificationDto } from '@app/common/dto';
 import { SocketEvents } from '@app/common/enums';
 import { Logger, OnModuleInit } from '@nestjs/common';
 import { WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-import { PushNotificationDto } from '../dto/push-notification.dto';
 import { PushService } from './push.service';
 
 @WebSocketGateway()

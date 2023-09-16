@@ -1,9 +1,12 @@
 import { NOTIFICATION_SERVICE } from '@app/common/constants';
-import { EmailNotificationDto, PushNotificationDto } from '@app/common/dto';
+import {
+  CreateChargeDto,
+  EmailNotificationDto,
+  PushNotificationDto,
+} from '@app/common/dto';
 import { EventPatterns, MailTemplates } from '@app/common/enums';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { CreateChargeDto } from './dto/create-charge.dto';
 import { StripeService } from './stripe/stripe.service';
 
 @Injectable()
