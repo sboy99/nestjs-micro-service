@@ -1,5 +1,5 @@
 import { DatabaseModule, LoggerModule } from '@app/common';
-import { AUTH_SERVICE, PAYMENT_SERVICE } from '@app/common/constants';
+import { AUTH_SERVICE, PAYMENT_SERVICE, Queues } from '@app/common/constants';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -18,10 +18,10 @@ import { ReservationService } from './reservation.service';
           imports: [ConfigModule],
           inject: [ConfigService<TConfig>],
           useFactory: (configService: ConfigService<TConfig>) => ({
-            transport: Transport.TCP,
+            transport: Transport.RMQ,
             options: {
-              host: configService.get('AUTH_HOST'),
-              port: configService.get('AUTH_PORT'),
+              urls: [configService.getOrThrow<string>('RABBITMQ_URI')],
+              queue: Queues.AUTH,
             },
           }),
         },
@@ -30,10 +30,10 @@ import { ReservationService } from './reservation.service';
           imports: [ConfigModule],
           inject: [ConfigService<TConfig>],
           useFactory: (configService: ConfigService<TConfig>) => ({
-            transport: Transport.TCP,
+            transport: Transport.RMQ,
             options: {
-              host: configService.get('PAYMENT_HOST'),
-              port: configService.get('PAYMENT_PORT'),
+              urls: [configService.getOrThrow<string>('RABBITMQ_URI')],
+              queue: Queues.PAYMENT,
             },
           }),
         },

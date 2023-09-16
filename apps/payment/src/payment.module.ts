@@ -1,5 +1,9 @@
 import { LoggerModule } from '@app/common';
-import { AUTH_SERVICE, NOTIFICATION_SERVICE } from '@app/common/constants';
+import {
+  AUTH_SERVICE,
+  NOTIFICATION_SERVICE,
+  Queues,
+} from '@app/common/constants';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -18,10 +22,10 @@ import { StripeModule } from './stripe/stripe.module';
           imports: [ConfigModule],
           inject: [ConfigService<TConfig>],
           useFactory: (configService: ConfigService<TConfig>) => ({
-            transport: Transport.TCP,
+            transport: Transport.RMQ,
             options: {
-              host: configService.get('AUTH_HOST'),
-              port: configService.get('AUTH_PORT'),
+              urls: [configService.getOrThrow('RABBITMQ_URI') as string],
+              queue: Queues.AUTH,
             },
           }),
         },
@@ -30,10 +34,10 @@ import { StripeModule } from './stripe/stripe.module';
           imports: [ConfigModule],
           inject: [ConfigService<TConfig>],
           useFactory: (configService: ConfigService<TConfig>) => ({
-            transport: Transport.TCP,
+            transport: Transport.RMQ,
             options: {
-              host: configService.get('NOTIFICATION_HOST'),
-              port: configService.get('NOTIFICATION_PORT'),
+              urls: [configService.getOrThrow('RABBITMQ_URI') as string],
+              queue: Queues.NOTIFICATION,
             },
           }),
         },

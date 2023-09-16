@@ -1,7 +1,12 @@
 import { MessagePatterns } from '@app/common/enums';
 import { ZodValidationPipe } from '@app/common/pipe';
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import {
+  Ctx,
+  MessagePattern,
+  Payload,
+  RmqContext,
+} from '@nestjs/microservices';
 import { CreateChargeDto, CreateChargeSchema } from './dto/create-charge.dto';
 import { PaymentService } from './payment.service';
 
@@ -13,10 +18,18 @@ export class PaymentController {
   async createCharge(
     @Payload(new ZodValidationPipe(CreateChargeSchema))
     createChargeDto: CreateChargeDto,
+    @Ctx() ctx: RmqContext,
   ) {
+    const channel = ctx.getChannelRef();
+    const orginalMessage = ctx.getMessage();
+
     const paymentIntend = await this.paymentService.createCharge(
       createChargeDto,
     );
+
+    // acknowledge
+    channel.ack(orginalMessage);
+
     return paymentIntend;
   }
 }

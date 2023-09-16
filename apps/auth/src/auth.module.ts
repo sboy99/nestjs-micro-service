@@ -1,5 +1,5 @@
 import { LoggerModule } from '@app/common';
-import { AUTH_SERVICE } from '@app/common/constants';
+import { AUTH_SERVICE, Queues } from '@app/common/constants';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
@@ -12,10 +12,18 @@ import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
-    ClientsModule.register([
+    ClientsModule.registerAsync([
       {
         name: AUTH_SERVICE,
-        transport: Transport.TCP,
+        imports: [ConfigModule],
+        inject: [ConfigService],
+        useFactory: (configService: ConfigService<TConfig>) => ({
+          transport: Transport.RMQ,
+          options: {
+            urls: [configService.getOrThrow<string>('RABBITMQ_URI')],
+            queue: Queues.AUTH,
+          },
+        }),
       },
     ]),
     ConfigModule.forRoot({

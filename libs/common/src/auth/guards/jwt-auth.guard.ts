@@ -17,6 +17,8 @@ export class JwtAuthGuard implements CanActivate {
     const accessToken = req.signedCookies?.['access_token'];
     if (!accessToken) return false;
 
+    console.log(accessToken);
+
     // send auth microservice authenticate request
     return this.authClient
       .send(MessagePatterns.AUTHENTICATE, { accessToken })

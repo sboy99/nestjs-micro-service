@@ -7,15 +7,13 @@ import {
   JWT_EXPIRATION,
   JWT_SECRET,
   MONGO_URI,
-  TCP_HOST,
-  TCP_PORT,
+  RABBITMQ_URI,
 } from '@app/common/config';
 
 export const ConfigValidationSchema = z.object({
   HTTP_PORT,
-  TCP_HOST,
-  TCP_PORT,
   MONGO_URI,
+  RABBITMQ_URI,
   JWT_SECRET,
   JWT_EXPIRATION,
   COOKIE_SECRET,

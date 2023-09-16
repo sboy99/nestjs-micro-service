@@ -1,3 +1,4 @@
+import { Queues } from '@app/common/constants';
 import { AllExceptionsFilter } from '@app/common/filters';
 import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
@@ -23,10 +24,10 @@ async function bootstrap() {
 
   // connect to microservices
   app.connectMicroservice({
-    transport: Transport.TCP,
+    transport: Transport.RMQ,
     options: {
-      host: configService.get('TCP_HOST'),
-      port: configService.get('TCP_PORT'),
+      urls: [configService.getOrThrow('RABBITMQ_URI')],
+      queue: Queues.AUTH,
     },
   });
   await app.startAllMicroservices();

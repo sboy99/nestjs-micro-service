@@ -2,29 +2,19 @@ import { z } from 'zod';
 
 // .env variables
 import {
-  AUTH_HOST,
-  AUTH_PORT,
   COOKIE_SECRET,
   MONGO_URI,
-  NOTIFICATION_HOST,
-  NOTIFICATION_PORT,
+  RABBITMQ_URI,
   STRIPE_RETURN_URL,
   STRIPE_SECRET,
-  TCP_HOST,
-  TCP_PORT,
 } from '@app/common/config';
 
 export const ConfigValidationSchema = z.object({
   MONGO_URI,
+  RABBITMQ_URI,
   COOKIE_SECRET,
   STRIPE_SECRET,
   STRIPE_RETURN_URL,
-  TCP_HOST,
-  TCP_PORT,
-  AUTH_HOST,
-  AUTH_PORT,
-  NOTIFICATION_HOST,
-  NOTIFICATION_PORT,
 });
 
 export type TConfig = z.infer<typeof ConfigValidationSchema>;

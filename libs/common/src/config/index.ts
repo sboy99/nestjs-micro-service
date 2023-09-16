@@ -26,3 +26,7 @@ export const NOTIFICATION_PORT = TCP_PORT;
 // stripe service
 export const STRIPE_SECRET = z.string();
 export const STRIPE_RETURN_URL = z.string();
+
+// rabbitmq
+export const RABBITMQ_URI = z.string();
+// export const RABBITMQ_QUEUE = z.string();

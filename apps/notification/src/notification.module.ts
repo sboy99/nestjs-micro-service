@@ -1,5 +1,5 @@
 import { LoggerModule } from '@app/common';
-import { AUTH_SERVICE } from '@app/common/constants';
+import { AUTH_SERVICE, Queues } from '@app/common/constants';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
@@ -23,10 +23,10 @@ import { PushModule } from './push/push.module';
           imports: [ConfigModule],
           inject: [ConfigService<TConfig>],
           useFactory: (configService: ConfigService<TConfig>) => ({
-            transport: Transport.TCP,
+            transport: Transport.RMQ,
             options: {
-              host: configService.get('AUTH_HOST'),
-              port: configService.get('AUTH_PORT'),
+              urls: [configService.getOrThrow('RABBITMQ_URI') as string],
+              queue: Queues.AUTH,
             },
           }),
         },

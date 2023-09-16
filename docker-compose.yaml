@@ -92,6 +92,17 @@ services:
       retries: 3
     networks:
       - nestjs_network
+
+  rabbitmq:
+    image: rabbitmq
+    container_name: nest_rabbitmq
+    restart: always
+    ports:
+      - '5672:5672'
+    networks:
+      - nestjs_network
+    volumes:
+      - rabbitmq_vol:/var/lib/rabbitmq
   # Chache service
   # cache:
   #   image: redis
@@ -104,7 +115,10 @@ services:
 # Network
 networks:
   nestjs_network:
+    name: nestjs_network
+
 # Volume
 volumes:
   nestjs_vol:
+  rabbitmq_vol:
   # buidl_cache:
